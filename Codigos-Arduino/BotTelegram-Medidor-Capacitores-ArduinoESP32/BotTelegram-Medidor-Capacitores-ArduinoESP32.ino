@@ -17,4 +17,8 @@ void setup() {
 void loop() {
   measuringDistance();
   usinghandleNewMessages();
+
+  if (DISTANCIA <10){
+    bot.sendMessage("1289944523", "Nivel por debajo de 10", "");
+  }
 }
