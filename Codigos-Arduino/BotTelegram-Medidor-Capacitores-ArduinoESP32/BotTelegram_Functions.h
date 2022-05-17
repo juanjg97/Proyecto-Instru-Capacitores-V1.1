@@ -41,23 +41,22 @@ void handleNewMessages(int numNewMessages)
         // Muestra en telegram en menú de opciones que puede seleccionar el usuario
         if (text == "/start")
         {
-            String welcome = "Welcome, " + from_name + ".\n";
-            welcome += "Use the following commands to control your outputs.\n\n";
-            welcome += "/led_on to turn GPIO ON \n";
-            welcome += "/led_off to turn GPIO OFF \n";
-            welcome += "/state to request current GPIO state \n";
-            welcome += "/get_distance to get the distance between sensor and object \n";
+            String welcome = "Bienvenid@, " + from_name + ".\n\n";
+            welcome += "Usa los siguientes comandos para controlar las salidas.\n\n";
+            welcome += "/led_on para encender el led \n";
+            welcome += "/led_off para apagar el led \n";
+            welcome += "/get_distance para obtener la distancia entre el sensor y el objeto \n";
             bot.sendMessage(chat_id, welcome, "");
         }
         else if (text == "/led_on")
         {
-            bot.sendMessage(chat_id, "LED state set to ON", "");
+            bot.sendMessage(chat_id, "El estado del led es encendido", "");
             ledState = HIGH;
             digitalWrite(ledPin, ledState);
         }
         else if (text == "/led_off")
         {
-            bot.sendMessage(chat_id, "LED state set to OFF", "");
+            bot.sendMessage(chat_id, "El estado del led es apagado", "");
             ledState = LOW;
             digitalWrite(ledPin, ledState);
         }
@@ -65,22 +64,15 @@ void handleNewMessages(int numNewMessages)
         {
             bot.sendMessage(chat_id, "Te amooo DanyRex", "");
         }
-        else if (text == "/state")
-        {
-            if (digitalRead(ledPin))
-            {
-                bot.sendMessage(chat_id, "LED is ON", "");
-            }
-            else
-            {
-                bot.sendMessage(chat_id, "LED is OFF", "");
-            }
-        }
         else if (text=="/get_distance") 
         {
           String distance_message = "La distancia entre el sensor y el objeto es: "+ String(DISTANCIA)+" [cm]";
           bot.sendMessage(chat_id,distance_message,"");
           Serial.println(distance_message);
+          unsigned long hour = hour();
+          unsigned long minute = minute();
+          String time_data=String(hour)+":"+String(minute);
+          Serial.println(time_data);
         }
         // Si no coincide ningún comando con lo que ingresó el usuario
         else
@@ -89,6 +81,7 @@ void handleNewMessages(int numNewMessages)
             bot.sendMessage(chat_id, "Comando inválido", "");
         }
     }
+
 }
 
 void usinghandleNewMessages()
@@ -103,5 +96,9 @@ void usinghandleNewMessages()
             numNewMessages = bot.getUpdates(bot.last_message_received + 1);
         }
         lastTimeBotRan = millis();
+    }
+        if (DISTANCIA <10)
+    {
+      bot.sendMessage("1289944523", "Nivel por debajo de 10", "");
     }
 }
