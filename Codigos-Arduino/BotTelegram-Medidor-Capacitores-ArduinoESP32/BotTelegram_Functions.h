@@ -64,15 +64,16 @@ void handleNewMessages(int numNewMessages)
         {
             bot.sendMessage(chat_id, "Te amooo DanyRex", "");
         }
-        else if (text=="/get_distance") 
+        //----------------------------------------------------------------------------------------------------------
+        else if (text == "/get_distance")
         {
-          String distance_message = "La distancia entre el sensor y el objeto es: "+ String(DISTANCIA)+" [cm]";
-          bot.sendMessage(chat_id,distance_message,"");
-          Serial.println(distance_message);
-          unsigned long hour = hour();
-          unsigned long minute = minute();
-          String time_data=String(hour)+":"+String(minute);
-          Serial.println(time_data);
+            String distance_message = "La distancia entre el sensor y el objeto es: " + String(DISTANCIA) + " [cm]";
+            bot.sendMessage(chat_id, distance_message, "");
+            Serial.println(distance_message);
+            unsigned long hour = hour();
+            unsigned long minute = minute();
+            String time_data = String(hour) + ":" + String(minute);
+            Serial.println(time_data);
         }
         // Si no coincide ningún comando con lo que ingresó el usuario
         else
@@ -81,7 +82,6 @@ void handleNewMessages(int numNewMessages)
             bot.sendMessage(chat_id, "Comando inválido", "");
         }
     }
-
 }
 
 void usinghandleNewMessages()
@@ -97,8 +97,9 @@ void usinghandleNewMessages()
         }
         lastTimeBotRan = millis();
     }
-        if (DISTANCIA <10)
+
+    if (DISTANCIA < 10)
     {
-      bot.sendMessage("1289944523", "Nivel por debajo de 10", "");
+        bot.sendMessage("1289944523", "Nivel por debajo de 10", "");
     }
 }

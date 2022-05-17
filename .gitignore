@@ -32,8 +32,10 @@
 *.app
 
 #Archivos de proteus
-.workspace
-.pdsbak
+*.workspace
+*.pdsbak
 
 # Datos de redes y token del bot
 Codigos-Arduino/BotTelegram-Medidor-Capacitores-ArduinoESP32/Token_Users_Wifi.h
+
+*.json
