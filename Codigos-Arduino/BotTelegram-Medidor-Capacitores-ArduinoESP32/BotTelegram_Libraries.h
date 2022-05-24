@@ -9,13 +9,13 @@
 #include <ArduinoJson.h>
 
 //-------------------------Configuración del token del Bot en telegram y Id's de usuario-----------------
-
+/*
 // Your Bot Token (Get from Botfather)
 #define BOTtoken "5361211948:AAG80HAokxf_zrrczkXBmz1kWOcpEpor0tM" 
 // Id de los usuarios autorizados para usar el bot (generado por telegram)
 #define CHAT_ID   "1289944523"
 #define CHAT_ID_2 "1284494200"
-
+*/
 //-----------------------------------------------------------------------------------------------
 #ifdef ESP8266
   X509List cert(TELEGRAM_CERTIFICATE_ROOT);

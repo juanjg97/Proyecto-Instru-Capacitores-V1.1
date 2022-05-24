@@ -11,6 +11,7 @@ void setup()
 {
   setUpBotSettings();
   setUpHcSettings();
+
 }
 /* ******************************** Configuración del Loop ********************************************* */
 void loop()
