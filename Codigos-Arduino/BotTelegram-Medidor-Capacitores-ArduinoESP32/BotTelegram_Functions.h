@@ -53,7 +53,7 @@ void handleNewMessages(int numNewMessages)
             welcome += "/led_on para encender el led \n";
             welcome += "/led_off para apagar el led \n";
             welcome += "/get_distance para obtener la distancia entre el sensor y el objeto \n";
-            welcome += "/get_volume para obtener el volúmen de agua actual \n";
+            welcome += "/get_data para obtener los datos del tinaco \n";
             bot.sendMessage(chat_id, welcome, "");
         }
         else if (text == "/led_on")
@@ -72,18 +72,24 @@ void handleNewMessages(int numNewMessages)
         {
             bot.sendMessage(chat_id, "Te amooo DanyRex", "");
         }
-        //----------------------------------------------------------------------------------------------------------
         else if (text == "/get_distance")
         {
             String distance_message = "La distancia entre el sensor y el objeto es: " + String(DISTANCIA) + " [cm]";
             bot.sendMessage(chat_id, distance_message, "");
             Serial.println(distance_message);
         }
-        else if (text == "/get_volume")
+        else if (text == "/get_data")
         {
-            String volume_message = "Volumen ocupado por agua: " + String(volumen_actual) + " [cm^3]";
-            bot.sendMessage(chat_id, volume_message, "");
-            Serial.println(volume_message);
+            String message_alert_data;
+            message_alert_data = "--------------------------------------------\n";
+            message_alert_data += "📄 DATOS DEL TINACO 📄\n";
+            message_alert_data += "\nCapacidad al = " + String(capacidad) + "%";
+            message_alert_data += "\n\nDistancia del sensor al agua = " + String(DISTANCIA);
+            message_alert_data += "\n\nVolumen total= " + String(volumen_total);
+            message_alert_data += "\nVolumen sin agua= " + String(volumen_vacio);
+            message_alert_data += "\nVolumen de agua = " + String(volumen_actual);
+            message_alert_data += "\n --------------------------------------------";
+            bot.sendMessage(chat_id, message_alert_data, "");
         }
         // Si no coincide ningún comando con lo que ingresó el usuario
         else
@@ -96,38 +102,34 @@ void handleNewMessages(int numNewMessages)
 
 void messageAlert()
 {
-    volumen_vacio = (LARGO) * (ANCHO) * (DISTANCIA);
-    volumen_actual = (volumen_total) - (volumen_vacio);
-    capacidad = ((100) * volumen_actual) / volumen_total;
-
-    if (capacidad < 20 && flag_1 && !flag_2)
+    if (capacidad >= 0 && capacidad < 20 && flag_1 && !flag_2)
     {
         flag_1 = false;
         flag_2 = true;
         String message_alert_low;
-        message_alert_low = "-------------------\n";
-        message_alert_low += "ALERTA\n";
+        message_alert_low = "--------------------------------------------\n";
+        message_alert_low += "⚠️⚠️⚠️ ALERTA ⚠️⚠️⚠️ \n";
         message_alert_low += "\nCapacidad al = " + String(capacidad) + "%";
-        message_alert_low += "\nNivel por debajo de 20% recargar tanque";
+        message_alert_low += "\n\nNivel por debajo de 20% recargar tanque";
         message_alert_low += "\nVolumen total= " + String(volumen_total);
         message_alert_low += "\nVolumen sin agua= " + String(volumen_vacio);
         message_alert_low += "\nVolumen de agua = " + String(volumen_actual);
-        message_alert_low +="\n ----------------------";
+        message_alert_low += "\n --------------------------------------------";
         bot.sendMessage("1289944523", message_alert_low, "");
     }
-    else if (capacidad > 90 && !flag_1 && flag_2)
+    else if (capacidad > 90 && capacidad <=100 && !flag_1 && flag_2)
     {
         flag_1 = true;
         flag_2 = false;
         String message_alert_high;
-        message_alert_high = "-------------------\n";
-        message_alert_high += "ALERTA\n";
+        message_alert_high = "--------------------------------------------\n";
+        message_alert_high += "⚠️⚠️⚠️ ALERTA ⚠️⚠️⚠️\n";
         message_alert_high += "\nCapacidad al = " + String(capacidad) + "%";
-        message_alert_high += "\nNivel mayor al 90% desconectar bomba tanque";
+        message_alert_high += "\n\nNivel mayor al 90% desconectar bomba tanque";
         message_alert_high += "\nVolumen total= " + String(volumen_total);
         message_alert_high += "\nVolumen vacío= " + String(volumen_vacio);
         message_alert_high += "\nVolumen ocupado = " + String(volumen_actual);
-        message_alert_high +="\n ----------------------";
+        message_alert_high += "\n --------------------------------------------";
         bot.sendMessage("1289944523", message_alert_high, "");
     }
 }
@@ -153,6 +155,10 @@ void flagAlert()
 
 void usinghandleNewMessages()
 {
+    volumen_vacio = (LARGO) * (ANCHO) * (DISTANCIA);
+    volumen_actual = (volumen_total) - (volumen_vacio);
+    capacidad = ((100) * volumen_actual) / volumen_total;
+
     if (millis() > lastTimeBotRan + botRequestDelay)
     {
         int numNewMessages = bot.getUpdates(bot.last_message_received + 1);
