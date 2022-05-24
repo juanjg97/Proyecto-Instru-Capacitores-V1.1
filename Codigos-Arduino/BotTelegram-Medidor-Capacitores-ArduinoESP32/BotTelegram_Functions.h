@@ -13,15 +13,12 @@ void handleNewMessages(int numNewMessages)
     Serial.print("Número nuevo de mensajes: ");
     Serial.println(String(numNewMessages));
     Serial.print("Comando ingresado en telegram: ");
-
     for (int i = 0; i < numNewMessages; i++)
     {
         // Chat id del solicitante
         String chat_id = String(bot.messages[i].chat_id);
-
         // Condición para validar que los id sean autorizados
         // Si entra en la condición no se autoriza el id y se da el mensaje correspondiente
-
         if ((chat_id != CHAT_ID_2) && (chat_id != CHAT_ID))
         {
             // Función para mandar mensajes a un usuario, identificandose mediante su id
@@ -31,7 +28,6 @@ void handleNewMessages(int numNewMessages)
             Serial.println(chat_id);
             continue;
         }
-
         // Guarda en text el texto que ingresó el usuario en Telegram
         String text = bot.messages[i].text;
         // Imprime en el monitor Serial el mensaje que se mandó mediante Telegram
@@ -43,7 +39,6 @@ void handleNewMessages(int numNewMessages)
         Serial.println(from_name);
         Serial.print("Con Id: ");
         Serial.println(chat_id);
-
         // Dependiendo de lo que haya ingresado el usuario, se ejecutan las siguientes opciones
         // Muestra en telegram en menú de opciones que puede seleccionar el usuario
         if (text == "/start")
@@ -80,18 +75,26 @@ void handleNewMessages(int numNewMessages)
         }
         else if (text == "/get_data")
         {
-            String message_alert_data;
-            message_alert_data = "--------------------------------------------\n";
-            message_alert_data += "📄 DATOS DEL TINACO 📄\n";
-            message_alert_data += "\nCapacidad al = " + String(capacidad) + "%";
-            message_alert_data += "\n\nDistancia del sensor al agua = " + String(DISTANCIA);
-            message_alert_data += "\n\nVolumen total= " + String(volumen_total);
-            message_alert_data += "\nVolumen sin agua= " + String(volumen_vacio);
-            message_alert_data += "\nVolumen de agua = " + String(volumen_actual);
-            message_alert_data += "\n --------------------------------------------";
-            bot.sendMessage(chat_id, message_alert_data, "");
+            if (capacidad > 100 || capacidad < 0)
+            {
+                String cuation_message;
+                caution_message = "El sensor se encuentra fuera de rango";
+                bot.sendMessage(chat_id, caution_message, "");
+            }
+            else
+            {
+                String message_alert_data;
+                message_alert_data = "--------------------------------------------\n";
+                message_alert_data += "📄 DATOS DEL TINACO 📄\n";
+                message_alert_data += "\nCapacidad al = " + String(capacidad) + "%";
+                message_alert_data += "\n\nDistancia del sensor al agua = " + String(DISTANCIA);
+                message_alert_data += "\n\nVolumen total= " + String(volumen_total);
+                message_alert_data += "\nVolumen sin agua= " + String(volumen_vacio);
+                message_alert_data += "\nVolumen de agua = " + String(volumen_actual);
+                message_alert_data += "\n --------------------------------------------";
+                bot.sendMessage(chat_id, message_alert_data, "");
+            }
         }
-        // Si no coincide ningún comando con lo que ingresó el usuario
         else
         {
             Serial.println("Comando inválido");
@@ -117,7 +120,7 @@ void messageAlert()
         message_alert_low += "\n --------------------------------------------";
         bot.sendMessage("1289944523", message_alert_low, "");
     }
-    else if (capacidad > 90 && capacidad <=100 && !flag_1 && flag_2)
+    else if (capacidad > 90 && capacidad <= 100 && !flag_1 && flag_2)
     {
         flag_1 = true;
         flag_2 = false;
@@ -158,11 +161,9 @@ void usinghandleNewMessages()
     volumen_vacio = (LARGO) * (ANCHO) * (DISTANCIA);
     volumen_actual = (volumen_total) - (volumen_vacio);
     capacidad = ((100) * volumen_actual) / volumen_total;
-
     if (millis() > lastTimeBotRan + botRequestDelay)
     {
         int numNewMessages = bot.getUpdates(bot.last_message_received + 1);
-
         while (numNewMessages)
         {
             handleNewMessages(numNewMessages);
@@ -170,7 +171,6 @@ void usinghandleNewMessages()
         }
         lastTimeBotRan = millis();
     }
-
     flagAlert();
     messageAlert();
 }
