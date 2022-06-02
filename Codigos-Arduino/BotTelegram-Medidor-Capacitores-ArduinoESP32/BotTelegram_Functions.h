@@ -77,20 +77,20 @@ void handleNewMessages(int numNewMessages)
         {
             if (capacidad > 100 || capacidad < 0)
             {
-                String cuation_message;
-                caution_message = "El sensor se encuentra fuera de rango";
-                bot.sendMessage(chat_id, caution_message, "");
+                String out_of_range_message;
+                out_of_range_message = "El sensor se encuentra fuera de rango";
+                bot.sendMessage(chat_id, out_of_range_message, "");
             }
             else
             {
                 String message_alert_data;
                 message_alert_data = "--------------------------------------------\n";
-                message_alert_data += "📄 DATOS DEL TINACO 📄\n";
+                message_alert_data += "📄 DATOS DEL TANQUE 📄\n";
                 message_alert_data += "\nCapacidad al = " + String(capacidad) + "%";
-                message_alert_data += "\n\nDistancia del sensor al agua = " + String(DISTANCIA);
-                message_alert_data += "\n\nVolumen total= " + String(volumen_total);
-                message_alert_data += "\nVolumen sin agua= " + String(volumen_vacio);
-                message_alert_data += "\nVolumen de agua = " + String(volumen_actual);
+                message_alert_data += "\n\nDistancia del sensor al agua = " + String(DISTANCIA) + " [cm]";
+                message_alert_data += "\n\nVolumen total       = " + String(volumen_total) + " [cm^3]";
+                message_alert_data += "\nVolumen con agua  = " + String(volumen_actual) + " [cm^3]";
+                message_alert_data += "\nVolumen sin agua = " + String(volumen_vacio) + " [cm^3]";
                 message_alert_data += "\n --------------------------------------------";
                 bot.sendMessage(chat_id, message_alert_data, "");
             }
@@ -111,12 +111,12 @@ void messageAlert()
         flag_2 = true;
         String message_alert_low;
         message_alert_low = "--------------------------------------------\n";
-        message_alert_low += "⚠️⚠️⚠️ ALERTA ⚠️⚠️⚠️ \n";
+        message_alert_low += " ⬇️🔴 ALERTA ⬇️🔴  \n";
         message_alert_low += "\nCapacidad al = " + String(capacidad) + "%";
-        message_alert_low += "\n\nNivel por debajo de 20% recargar tanque";
-        message_alert_low += "\nVolumen total= " + String(volumen_total);
-        message_alert_low += "\nVolumen sin agua= " + String(volumen_vacio);
-        message_alert_low += "\nVolumen de agua = " + String(volumen_actual);
+        message_alert_low += "\n\nNivel por debajo del 20% recargar tanque";
+        message_alert_low += "\n\nVolumen total       = " + String(volumen_total) + " [cm^3]";
+        message_alert_low += "\nVolumen con agua  = " + String(volumen_actual) + " [cm^3]";
+        message_alert_low += "\nVolumen sin agua = " + String(volumen_vacio) + " [cm^3]";
         message_alert_low += "\n --------------------------------------------";
         bot.sendMessage("1289944523", message_alert_low, "");
     }
@@ -126,12 +126,12 @@ void messageAlert()
         flag_2 = false;
         String message_alert_high;
         message_alert_high = "--------------------------------------------\n";
-        message_alert_high += "⚠️⚠️⚠️ ALERTA ⚠️⚠️⚠️\n";
+        message_alert_high += " ⬆️🟢 ALERTA ⬆️🟢 \n";
         message_alert_high += "\nCapacidad al = " + String(capacidad) + "%";
         message_alert_high += "\n\nNivel mayor al 90% desconectar bomba tanque";
-        message_alert_high += "\nVolumen total= " + String(volumen_total);
-        message_alert_high += "\nVolumen vacío= " + String(volumen_vacio);
-        message_alert_high += "\nVolumen ocupado = " + String(volumen_actual);
+        message_alert_high += "\n\nVolumen total       = " + String(volumen_total) + " [cm^3]";
+        message_alert_high += "\nVolumen con agua  = " + String(volumen_actual) + " [cm^3]";
+        message_alert_high += "\nVolumen sin agua = " + String(volumen_vacio) + "[cm^3]";
         message_alert_high += "\n --------------------------------------------";
         bot.sendMessage("1289944523", message_alert_high, "");
     }
