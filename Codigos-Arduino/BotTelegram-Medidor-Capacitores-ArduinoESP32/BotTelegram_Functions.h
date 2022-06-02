@@ -135,6 +135,18 @@ void messageAlert()
         message_alert_high += "\n --------------------------------------------";
         bot.sendMessage("1289944523", message_alert_high, "");
     }
+    /*
+    if (capacidad >= 0 && capacidad < 20)
+    {
+        ledState = HIGH;
+        digitalWrite(ledPin, ledState);
+    }
+    else
+    {
+        ledState = LOW;
+        digitalWrite(ledPin, ledState);
+    }
+    */
 }
 
 void flagAlert()
