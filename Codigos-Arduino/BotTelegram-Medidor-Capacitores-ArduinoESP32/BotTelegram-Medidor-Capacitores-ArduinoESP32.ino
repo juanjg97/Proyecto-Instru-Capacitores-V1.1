@@ -11,6 +11,8 @@ void setup()
 {
   setUpBotSettings();
   setUpHcSettings();
+  bot.sendMessage("1289944523", "\n*************Servicio activo*************\n", "");
+  
 
 }
 /* ******************************** Configuración del Loop ********************************************* */

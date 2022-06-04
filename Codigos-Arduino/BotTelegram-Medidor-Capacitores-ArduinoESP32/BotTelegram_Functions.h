@@ -105,7 +105,7 @@ void handleNewMessages(int numNewMessages)
 
 void messageAlert()
 {
-    if (capacidad >= 0 && capacidad < 20 && flag_1 && !flag_2)
+    if (capacidad >= 0 && capacidad <= 20 && flag_1 && !flag_2)
     {
         flag_1 = false;
         flag_2 = true;
@@ -120,7 +120,7 @@ void messageAlert()
         message_alert_low += "\n --------------------------------------------";
         bot.sendMessage("1289944523", message_alert_low, "");
     }
-    else if (capacidad > 90 && capacidad <= 100 && !flag_1 && flag_2)
+    else if (capacidad >= 85 && capacidad <= 100 && !flag_1 && flag_2)
     {
         flag_1 = true;
         flag_2 = false;
@@ -128,7 +128,7 @@ void messageAlert()
         message_alert_high = "--------------------------------------------\n";
         message_alert_high += " ⬆️🟢 ALERTA ⬆️🟢 \n";
         message_alert_high += "\nCapacidad al = " + String(capacidad) + "%";
-        message_alert_high += "\n\nNivel mayor al 90% desconectar bomba tanque";
+        message_alert_high += "\n\nNivel mayor al 85% desconectar bomba tanque";
         message_alert_high += "\n\nVolumen total       = " + String(volumen_total) + " [cm^3]";
         message_alert_high += "\nVolumen con agua  = " + String(volumen_actual) + " [cm^3]";
         message_alert_high += "\nVolumen sin agua = " + String(volumen_vacio) + "[cm^3]";
@@ -153,13 +153,13 @@ void flagAlert()
 {
     while (flag == true)
     {
-        if (capacidad <= 20)
+        if (capacidad <= 20.0)
         {
             flag_1 = true;
             flag_2 = false;
             flag = false;
         }
-        else if (capacidad >= 90)
+        else if (capacidad >= 85.0)
         {
             flag_1 = false;
             flag_2 = true;
