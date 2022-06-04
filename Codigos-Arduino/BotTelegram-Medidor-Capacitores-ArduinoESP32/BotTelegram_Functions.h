@@ -2,9 +2,12 @@ bool flag = true;
 bool flag_1 = true;
 bool flag_2 = true;
 
-int volumen_vacio = 0;
-int volumen_actual = 0;
+float volumen_vacio = 0.0;
+float volumen_actual = 0.0;
 float capacidad = 0.0;
+
+float volumen_vacio_c = 0.0;
+float volumen_actual_c = 0.0;
 
 // Función para administrar los mensajes entre Telegram y el ESP32
 void handleNewMessages(int numNewMessages)
@@ -88,9 +91,9 @@ void handleNewMessages(int numNewMessages)
                 message_alert_data += "📄 DATOS DEL TANQUE 📄\n";
                 message_alert_data += "\nCapacidad al = " + String(capacidad) + "%";
                 message_alert_data += "\n\nDistancia del sensor al agua = " + String(DISTANCIA) + " [cm]";
-                message_alert_data += "\n\nVolumen total       = " + String(volumen_total) + " [cm^3]";
-                message_alert_data += "\nVolumen con agua  = " + String(volumen_actual) + " [cm^3]";
-                message_alert_data += "\nVolumen sin agua = " + String(volumen_vacio) + " [cm^3]";
+                message_alert_data += "\n\nVolumen total       = " + String(volumen_total_c) + " [cm^3]";
+                message_alert_data += "\nVolumen con agua  = " + String(volumen_actual_c) + " [cm^3]";
+                message_alert_data += "\nVolumen sin agua = " + String(volumen_vacio_c) + " [cm^3]";
                 message_alert_data += "\n --------------------------------------------";
                 bot.sendMessage(chat_id, message_alert_data, "");
             }
@@ -114,9 +117,9 @@ void messageAlert()
         message_alert_low += " ⬇️🔴 ALERTA ⬇️🔴  \n";
         message_alert_low += "\nCapacidad al = " + String(capacidad) + "%";
         message_alert_low += "\n\nNivel por debajo del 20% recargar tanque";
-        message_alert_low += "\n\nVolumen total       = " + String(volumen_total) + " [cm^3]";
-        message_alert_low += "\nVolumen con agua  = " + String(volumen_actual) + " [cm^3]";
-        message_alert_low += "\nVolumen sin agua = " + String(volumen_vacio) + " [cm^3]";
+        message_alert_low += "\n\nVolumen total       = " + String(volumen_total_c) + " [cm^3]";
+        message_alert_low += "\nVolumen con agua  = " + String(volumen_actual_c) + " [cm^3]";
+        message_alert_low += "\nVolumen sin agua = " + String(volumen_vacio_c) + " [cm^3]";
         message_alert_low += "\n --------------------------------------------";
         bot.sendMessage("1289944523", message_alert_low, "");
     }
@@ -129,9 +132,9 @@ void messageAlert()
         message_alert_high += " ⬆️🟢 ALERTA ⬆️🟢 \n";
         message_alert_high += "\nCapacidad al = " + String(capacidad) + "%";
         message_alert_high += "\n\nNivel mayor al 90% desconectar bomba tanque";
-        message_alert_high += "\n\nVolumen total       = " + String(volumen_total) + " [cm^3]";
-        message_alert_high += "\nVolumen con agua  = " + String(volumen_actual) + " [cm^3]";
-        message_alert_high += "\nVolumen sin agua = " + String(volumen_vacio) + "[cm^3]";
+        message_alert_high += "\n\nVolumen total       = " + String(volumen_total_c) + " [cm^3]";
+        message_alert_high += "\nVolumen con agua  = " + String(volumen_actual_c) + " [cm^3]";
+        message_alert_high += "\nVolumen sin agua = " + String(volumen_vacio_c) + "[cm^3]";
         message_alert_high += "\n --------------------------------------------";
         bot.sendMessage("1289944523", message_alert_high, "");
     }
@@ -170,9 +173,18 @@ void flagAlert()
 
 void usinghandleNewMessages()
 {
+    /*
     volumen_vacio = (LARGO) * (ANCHO) * (DISTANCIA);
     volumen_actual = (volumen_total) - (volumen_vacio);
     capacidad = ((100) * volumen_actual) / volumen_total;
+    */
+
+    //
+    volumen_vacio_c = (Pi) * (radio) * (radio) * (DISTANCIA);
+    volumen_actual_c = (volumen_total_c) - (volumen_vacio_c);
+    capacidad = ((100) * volumen_actual_c) / volumen_total_c;
+    //
+
     if (millis() > lastTimeBotRan + botRequestDelay)
     {
         int numNewMessages = bot.getUpdates(bot.last_message_received + 1);
