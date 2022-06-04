@@ -153,17 +153,21 @@ void flagAlert()
 {
     while (flag == true)
     {
-        if (capacidad < 20)
+        if (capacidad <= 20)
         {
             flag_1 = true;
             flag_2 = false;
             flag = false;
         }
-        else if (capacidad > 90)
+        else if (capacidad >= 90)
         {
             flag_1 = false;
             flag_2 = true;
             flag = false;
+        }
+        else
+        {
+            break;
         }
     }
 }
