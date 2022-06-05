@@ -10,7 +10,7 @@ float volumen_total = (ALTO) * (LARGO) * (ANCHO);
 
 float Pi = 3.1415;
 float radio = 15;
-float altura = 80;
+float altura = 50;
 float volumen_total_c = (Pi) * (radio) * (radio) * (altura);
 
 void setUpHcSettings()

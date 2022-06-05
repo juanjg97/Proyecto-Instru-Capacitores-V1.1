@@ -108,14 +108,14 @@ void handleNewMessages(int numNewMessages)
 
 void messageAlert()
 {
-    if (capacidad >= 0 && capacidad < 20 && flag_1 && !flag_2)
+    if (capacidad >= 0 && capacidad <= 20 && flag_1 && !flag_2)
     {
         flag_1 = false;
         flag_2 = true;
         String message_alert_low;
         message_alert_low = "--------------------------------------------\n";
         message_alert_low += " ⬇️🔴 ALERTA ⬇️🔴  \n";
-        message_alert_low += "\nCapacidad al = " + String(capacidad) + "%";
+        message_alert_low += "\nCapacidad al " + String(capacidad) + "%";
         message_alert_low += "\n\nNivel por debajo del 20% recargar tanque";
         message_alert_low += "\n\nVolumen total       = " + String(volumen_total_c) + " [cm^3]";
         message_alert_low += "\nVolumen con agua  = " + String(volumen_actual_c) + " [cm^3]";
@@ -123,22 +123,22 @@ void messageAlert()
         message_alert_low += "\n --------------------------------------------";
         bot.sendMessage("1289944523", message_alert_low, "");
     }
-    else if (capacidad > 90 && capacidad <= 100 && !flag_1 && flag_2)
+    else if (capacidad > 85 && capacidad <= 100 && !flag_1 && flag_2)
     {
         flag_1 = true;
         flag_2 = false;
         String message_alert_high;
         message_alert_high = "--------------------------------------------\n";
         message_alert_high += " ⬆️🟢 ALERTA ⬆️🟢 \n";
-        message_alert_high += "\nCapacidad al = " + String(capacidad) + "%";
-        message_alert_high += "\n\nNivel mayor al 90% desconectar bomba tanque";
+        message_alert_high += "\nCapacidad al " + String(capacidad) + "%";
+        message_alert_high += "\n\nNivel mayor al 85% desconectar bomba tanque";
         message_alert_high += "\n\nVolumen total       = " + String(volumen_total_c) + " [cm^3]";
         message_alert_high += "\nVolumen con agua  = " + String(volumen_actual_c) + " [cm^3]";
         message_alert_high += "\nVolumen sin agua = " + String(volumen_vacio_c) + "[cm^3]";
         message_alert_high += "\n --------------------------------------------";
         bot.sendMessage("1289944523", message_alert_high, "");
     }
-    /*
+
     if (capacidad >= 0 && capacidad < 20)
     {
         ledState = HIGH;
@@ -149,52 +149,46 @@ void messageAlert()
         ledState = LOW;
         digitalWrite(ledPin, ledState);
     }
-    */
 }
 
 void flagAlert()
 {
-    while (flag == true)
-    {
-        if (capacidad < 20)
+        while (flag == true)
         {
-            flag_1 = true;
-            flag_2 = false;
-            flag = false;
+            if (capacidad <= 20.0)
+            {
+                flag_1 = true;
+                flag_2 = false;
+                flag = false;
+            }
+            else if (capacidad >= 85.0)
+            {
+                flag_1 = false;
+                flag_2 = true;
+                flag = false;
+            }
+            else
+            {
+                break;
+            }
         }
-        else if (capacidad > 90)
-        {
-            flag_1 = false;
-            flag_2 = true;
-            flag = false;
-        }
-    }
 }
-
-void usinghandleNewMessages()
-{
-    /*
-    volumen_vacio = (LARGO) * (ANCHO) * (DISTANCIA);
-    volumen_actual = (volumen_total) - (volumen_vacio);
-    capacidad = ((100) * volumen_actual) / volumen_total;
-    */
-
-    //
-    volumen_vacio_c = (Pi) * (radio) * (radio) * (DISTANCIA);
-    volumen_actual_c = (volumen_total_c) - (volumen_vacio_c);
-    capacidad = ((100) * volumen_actual_c) / volumen_total_c;
-    //
-
-    if (millis() > lastTimeBotRan + botRequestDelay)
+    void usinghandleNewMessages()
     {
-        int numNewMessages = bot.getUpdates(bot.last_message_received + 1);
-        while (numNewMessages)
+        volumen_vacio_c = (Pi) * (radio) * (radio) * (DISTANCIA);
+        volumen_actual_c = (volumen_total_c) - (volumen_vacio_c);
+        capacidad = ((100) * volumen_actual_c) / volumen_total_c;
+
+        if (millis() > lastTimeBotRan + botRequestDelay)
         {
-            handleNewMessages(numNewMessages);
-            numNewMessages = bot.getUpdates(bot.last_message_received + 1);
+            int numNewMessages = bot.getUpdates(bot.last_message_received + 1);
+            while (numNewMessages)
+            {
+                handleNewMessages(numNewMessages);
+                numNewMessages = bot.getUpdates(bot.last_message_received + 1);
+            }
+            lastTimeBotRan = millis();
         }
-        lastTimeBotRan = millis();
+        flagAlert();
+        messageAlert();
     }
-    flagAlert();
-    messageAlert();
-}
