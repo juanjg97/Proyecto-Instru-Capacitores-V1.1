@@ -18,4 +18,13 @@ void loop()
 {
   measuringDistance();
   usinghandleNewMessages();
+  Serial.println("------------------");
+  Serial.print("Distancia: ");
+  Serial.println(DISTANCIA);
+  Serial.print("Capacidad: ");
+  Serial.println(capacidad);
+  Serial.print("Volumen vacío: ");
+  Serial.println(volumen_vacio_c);
+  Serial.print("Volúmen agua: ");
+  Serial.println(volumen_actual_c);
 }
